@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="description" content=""/>
+<meta name="keywords" content=""/>
+<meta name="viewport" content="user-scalable=no, width=device-width, maximum-scale=1.0"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="format-detection" content="telephone=no" />
+<title>PhotoSwipe: Responsive JavaScript Image Gallery</title>
+<link href="dist/photoswipe.css?v=4.1.1-1.0.4" rel="stylesheet" />
+<link href="dist/default-skin/default-skin.css?v=4.1.1-1.0.4" rel="stylesheet" />    
+<script src="dist/photoswipe.min.js?v=4.1.1-1.0.4"></script>
+<script src="dist/photoswipe-ui-default.min.js?v=4.1.1-1.0.4"></script>
+<script src="dist/photoswipepackage.js"></script>
+</head>
+<body>
+<div id="demogallery">
+    <div id="demo-test-gallery" class="demo-gallery">
+        <div class="preview-img">
+            <div class="img" style="background-image: url('https://farm4.staticflickr.com/3894/15008518202_c265dfa55f_h.jpg')"></div>
+        </div>
+        <div class="preview-img" style="background-image: url('https://farm6.staticflickr.com/5591/15008867125_b61960af01_h.jpg')"></div>
+        <div class="preview-img" style="background-image: url('https://farm4.staticflickr.com/3920/15008465772_d50c8f0531_h.jpg')"></div>
+    </div>
+</div>
+<script type="text/javascript">
+(function() {
+    
+    var arr = [
+        {
+            src: 'https://farm4.staticflickr.com/3894/15008518202_b016d7d289_b.jpg',
+            // 作者
+            author: 'Folkert Gorter',
+            // 简介
+            msg: 'This is dummy caption.'
+        },
+        {
+            src: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
+        },
+        {
+            src: 'https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg',
+            author: 'Folkert Gorter2',
+            msg: 'It\'s a dummy caption. He who searches for meaning here will be sorely disappointed.'
+        }
+    ]
+
+    // 创建模板
+    // var demoGallery = document.querySelector('.demo-gallery');
+    // demoGallery.innerHTML = photoswipe.createImgTpl(arr);
+    // 初始化 查找.demo-gallery区域下面所有符合放大图片的元素
+    // photoswipe.init('.demo-gallery');
+
+    photoswipe.init(arr, '.preview-img');
+})();
+</script>
+<style>
+.preview-img , .img{
+    width: 100px;
+    height: 100px;
+    float: left;
+    margin-right: 15px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: #f0f0f0;
+}
+#demogallery{
+    overflow:hidden;
+}
+#demo-test-gallery a{
+    float:left;
+    margin:0 2px 2px;
+    width: 120px;
+}
+#demo-test-gallery a img{
+    width:100%;
+}
+#demo-test-gallery a figure{
+    display: none;
+}
+#demo-test-gallery a:first-child{
+    width:164px;
+}
+</style>
+</body>
+</html>
