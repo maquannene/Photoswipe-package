@@ -25,6 +25,7 @@ var photoswipeObj = {
             <div class="pswp__top-bar">\
                 <div class="pswp__counter"></div>\
                 <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>\
+                <button class="pswp__button pswp__button--share" title="Share"></button>\
                 <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>\
                 <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>\
                 <div class="pswp__preloader">\
@@ -132,35 +133,20 @@ var photoswipeObj = {
                     return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
                 },
                 addCaptionHTMLFn: function(item, captionEl, isFake) {
-                    console.log(item, captionEl)
                     var author = item.author ? '<br/><small>Photo:' + item.author + '</small>' : '';
                     captionEl.children[0].innerHTML = author;
                     return true;
                 },
                 tapToClose: true,
-                index: parseInt(index, 10)
+                index: parseInt(index, 10),
+                shareEl: true,
+                shareButtons: [
+                  {id: 'download', label: '下载图片', url: '{{raw_image_url}}', download: true}
+                ]
             };
             // exit if index not found
             if( isNaN(options.index) ) {
                 return;
-            }
-
-            var radios = document.getElementsByName('gallery-style');
-            for (var i = 0, length = radios.length; i < length; i++) {
-                if (radios[i].checked) {
-                    if(radios[i].id == 'radio-all-controls') {
-
-                    } else if(radios[i].id == 'radio-minimal-black') {
-                        options.mainClass = 'pswp--minimal--dark';
-                        options.barsSize = {top:0,bottom:0};
-                        options.captionEl = false;
-                        options.fullscreenEl = false;
-                        options.shareEl = false;
-                        options.bgOpacity = 0.85;
-                        options.tapToToggleControls = false;
-                    }
-                    break;
-                }
             }
 
             if(disableAnimation) {
