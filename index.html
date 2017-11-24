@@ -2,34 +2,45 @@
 <html>
 <head>
 <meta charset="utf-8">
-<meta name="description" content=""/>
-<meta name="keywords" content=""/>
-<meta name="viewport" content="user-scalable=no, width=device-width, maximum-scale=1.0"/>
-<meta name="apple-mobile-web-app-capable" content="yes" />
-<meta name="format-detection" content="telephone=no" />
-<title>PhotoSwipe: Responsive JavaScript Image Gallery</title>
-<script src="dist/bundle.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-touch-fullscreen" content="yes">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="full-screen" content="yes"><!--UC全屏 待测试-->
+<meta name="imagemode" content="force"><!--UC强制显示图片-->
+<meta name="browsermode" content="application"/><!--UC应用模式-->
+<meta name="x5-fullscreen" content="true"><!--QQ全屏 待测试-->
+<meta name="x5-page-mode" content="app" /><!--QQ应用模式-->
+<meta http-equiv="Cache-Control" content="no-siteapp"><!-- 禁止百度转码 -->
+<title>myPhotoSwipe</title>
 </head>
 <body>
 <div id="demogallery">
-    <div id="demo-test-gallery" class="demo-gallery">
-        <div class="preview-img">
-            <div class="img" style="background-image: url('https://farm4.staticflickr.com/3894/15008518202_b016d7d289_b.jpg')"></div>
+    <div>
+        <h3>js</h3>
+        <div id="demo-test-gallery" class="demo-gallery">
+            <div class="preview-img" data-index="0" style="background-image: url('https://farm4.staticflickr.com/3894/15008518202_b016d7d289_b.jpg')"></div>
+            <div class="preview-img" data-index="1" style="background-image: url('https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg')"></div>
+            <div class="preview-img" data-index="2" style="background-image: url('https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg')"></div>
         </div>
-        <div class="preview-img" style="background-image: url('https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg')"></div>
-        <div class="preview-img" style="background-image: url('https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg')"></div>
+    </div>
+
+    <div>
+        <h3>vue</h3>
+        <div id="app"></div>
     </div>
 </div>
-<script type="text/javascript">
-(function() {
-    
+
+<script>
+window.onload = function () {
     var arr = [
         {
             src: 'https://farm4.staticflickr.com/3894/15008518202_b016d7d289_b.jpg',
             // 作者
             author: 'Folkert Gorter',
             // 简介
-            msg: 'This is dummy caption.'
+            desc: 'This is dummy caption.'
         },
         {
             src: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
@@ -37,13 +48,22 @@
         {
             src: 'https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg',
             author: 'Folkert Gorter2',
-            msg: 'It\'s a dummy caption. He who searches for meaning here will be sorely disappointed.'
+            desc: 'It\'s a dummy caption. He who searches for meaning here will be sorely disappointed.'
         }
     ]
 
-    photoswipe.init(arr, '.preview-img');
-})();
+    PreviewLite.init(arr, '.preview-img', function () {
+        console.log('js cloooooooose');
+    });
+
+    document.querySelector('.demo-gallery').addEventListener('click', function (e) {
+        var target = e.target;
+        var index = target.getAttribute('data-index') * 1
+        PreviewLite.show(index)
+    })
+}
 </script>
+
 <style>
 .preview-img , .img{
     width: 100px;
@@ -55,7 +75,7 @@
     background-repeat: no-repeat;
     background-color: #f0f0f0;
 }
-#demogallery{
+.demo-gallery{
     overflow:hidden;
 }
 #demo-test-gallery a{

@@ -1,16 +1,20 @@
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
+    // entry: __dirname+'/myPhotoSwipeEntry.js',
     entry: __dirname+'/entry.js',
     output: {
         path: __dirname+'/dist',
+        // filename: 'myPhotoswipe.js'
         filename: 'bundle.js'
     },
     module: {
         loaders: [
             {test: /\.css$/,loader: 'style-loader!css-loader'},
             {test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
-            {test: /\.svg/, loader: 'svg-url-loader'}
+            {test: /\.svg/, loader: 'svg-url-loader'},
+            {test: /\.vue/, loader: 'vue-loader'}
         ]
     },
     plugins: [
@@ -18,6 +22,9 @@ module.exports = {
         compress: {
           warnings: false
         }
+      }),
+      new HtmlWebpackPlugin({
+        template: 'index.html'
       })
     ],
     devServer: {

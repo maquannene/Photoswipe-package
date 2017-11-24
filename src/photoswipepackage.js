@@ -1,235 +1,158 @@
+import PhotoSwipe from './photoswipe.js'
+import PhotoSwipeUI_Default from './photoswipe-ui-default.js'
+
 /*深一层封装photoswipe 暴露接口*/
 var photoswipeObj = {
+    data: [],
+    selector: '',
+    gallery: {},
+    closeHandler: null,
     // 创建弹出框图片
-    createGalleryDialog: function (data, dom) {
-        // 如果存在则不在渲染
-        if (document.querySelector('#gallery')) {
-            return;
-        }
-        var body = document.body;
-        var galleryDom = document.createElement("DIV");
-        galleryDom.id = 'gallery';
-        galleryDom.className = 'pswp';
-
-        // append body  dialog
-        body.appendChild(galleryDom);
-        var galleryHtml = '\
-        <div class="pswp__bg"></div>\
-        <div class="pswp__scroll-wrap">\
-          <div class="pswp__container">\
-            <div class="pswp__item"></div>\
-            <div class="pswp__item"></div>\
-            <div class="pswp__item"></div>\
-          </div>\
-          <div class="pswp__ui pswp__ui--hidden">\
-            <div class="pswp__top-bar">\
-                <div class="pswp__counter"></div>\
-                <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>\
-                <button class="pswp__button pswp__button--share" title="Share"></button>\
-                <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>\
-                <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>\
-                <div class="pswp__preloader">\
-                    <div class="pswp__preloader__icn">\
-                      <div class="pswp__preloader__cut">\
-                        <div class="pswp__preloader__donut"></div>\
-                      </div>\
+    createGalleryDialog: function (data) {
+        // 如果存在则不在渲染，仅仅初始化数据
+        if (!document.querySelector('#gallery')) {
+            var body = document.body;
+            var galleryDom = document.createElement("DIV");
+            galleryDom.id = 'gallery';
+            galleryDom.className = 'pswp';
+    
+            // append body  dialog
+            body.appendChild(galleryDom);
+            var galleryHtml = '\
+            <div class="pswp__bg"></div>\
+            <div class="pswp__scroll-wrap">\
+              <div class="pswp__container">\
+                <div class="pswp__item"></div>\
+                <div class="pswp__item"></div>\
+                <div class="pswp__item"></div>\
+              </div>\
+              <div class="pswp__ui pswp__ui--hidden">\
+                <div class="pswp__top-bar">\
+                    <div class="pswp__counter"></div>\
+                    <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>\
+                    <button class="pswp__button pswp__button--share" title="Share"></button>\
+                    <button class="pswp__button pswp__button--fs" title="Toggle fullscreen"></button>\
+                    <button class="pswp__button pswp__button--zoom" title="Zoom in/out"></button>\
+                    <div class="pswp__preloader">\
+                        <div class="pswp__preloader__icn">\
+                          <div class="pswp__preloader__cut">\
+                            <div class="pswp__preloader__donut"></div>\
+                          </div>\
+                        </div>\
                     </div>\
                 </div>\
-            </div>\
-            <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">\
-                <div class="pswp__share-tooltip"></div>\
-            </div>\
-            <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>\
-            <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>\
-            <div class="pswp__caption">\
-              <div class="pswp__caption__center"></div>\
-            </div>\
-          </div>\
-        </div>';
-        // <button class="pswp__button pswp__button--share" title="Share"></button>\
-        galleryDom.innerHTML = galleryHtml;
-        // 初始化
-        photoswipeObj.initPhotoSwipeFromDOM(data, dom);
+                <div class="pswp__share-modal pswp__share-modal--hidden pswp__single-tap">\
+                    <div class="pswp__share-tooltip"></div>\
+                </div>\
+                <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>\
+                <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>\
+                <div class="pswp__caption">\
+                  <div class="pswp__caption__center"></div>\
+                </div>\
+              </div>\
+            </div>';
+            // <button class="pswp__button pswp__button--share" title="Share"></button>\
+            galleryDom.innerHTML = galleryHtml;
+        }
+        // 初始化数据
+        this.initGalleryData(data);
     },
-    initPhotoSwipeFromDOM: function(data, imgSelector) {
-    
-        var parseThumbnailElements = function(params) {
-            var showItem = data[params.index]
-            if (!showItem.w || !showItem.h || showItem.w < 5 || showItem.h < 5) {
-                var img = new Image()
-                img.onload = function () {
-                    showItem.w = this.width
-                    showItem.h = this.height
-                    initPhotoSwipe(params)
-                }
-                img.src = showItem.src
-            } else {
-                initPhotoSwipe(params)
-            }
-        };
-
-        var onThumbnailsClick = function(e) {
-            e = e || window.event;
-            e.preventDefault ? e.preventDefault() : e.returnValue = false;
-            var eTarget = e.currentTarget;
-            var index = eTarget.getAttribute('data-pswp-index') * 1 - 1
-            var clickedGallery = eTarget.parentNode;
-            if(index >= 0) {
-                openPhotoSwipe( index );
-            }
-            return false;
-        };
-
-        var photoswipeParseHash = function() {
-            var hash = window.location.hash.substring(1),
-            params = {};
-
-            if(hash.length < 5) { // pid=1
-                return params;
-            }
-
-            var vars = hash.split('&');
-            for (var i = 0; i < vars.length; i++) {
-                if(!vars[i]) {
-                    continue;
-                }
-                var pair = vars[i].split('=');  
-                if(pair.length < 2) {
-                    continue;
-                }           
-                params[pair[0]] = pair[1];
-            }
-
-            if(params.gid) {
-                params.gid = parseInt(params.gid, 10);
-            }
-
-            return params;
-        };
-
-        var openPhotoSwipe = function(index, disableAnimation, fromURL) {
-            var params = {
-                index: index,
-                disableAnimation: disableAnimation,
-                fromURL: fromURL
-            }
-            parseThumbnailElements(params);
-        };
-
-        var initPhotoSwipe = function (params) {
-            var pswpElement = document.querySelectorAll('.pswp')[0];
-            var items = data
-            var index = params.index
-            var disableAnimation = params.disableAnimation
-            var fromURL = params.fromURL
-            console.log(data, index)
-            // define options (if needed)
-            var options = {
-                getThumbBoundsFn: function(index) {
-                    // See Options->getThumbBoundsFn section of docs for more info
-                    var thumbnail = document.querySelectorAll( imgSelector )[index],
-                        pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
-                        rect = thumbnail.getBoundingClientRect(); 
-                    return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
-                },
-                addCaptionHTMLFn: function(item, captionEl, isFake) {
-                    var author = item.author ? '<br/><small>Photo:' + item.author + '</small>' : '';
-                    captionEl.children[0].innerHTML = author;
-                    return true;
-                },
-                tapToClose: true,
-                index: parseInt(index, 10),
-                shareEl: true,
-                shareButtons: [
-                  {id: 'download', label: '下载图片', url: '{{raw_image_url}}', download: true}
-                ]
-            };
-            // exit if index not found
-            if( isNaN(options.index) ) {
-                return;
-            }
-
-            if(disableAnimation) {
-                options.showAnimationDuration = 0;
-            }
-
-            // Pass data to PhotoSwipe and initialize it
-            var gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-
-            // see: http://photoswipe.com/documentation/responsive-images.html
-            var realViewportWidth,
-                useLargeImages = false,
-                firstResize = true,
-                imageSrcWillChange;
-
-            gallery.listen('beforeResize', function() {
-                var dpiRatio = window.devicePixelRatio ? window.devicePixelRatio : 1;
-                dpiRatio = Math.min(dpiRatio, 2.5);
-                realViewportWidth = gallery.viewportSize.x * dpiRatio;
-
-                if(realViewportWidth >= 1200 || (!gallery.likelyTouchDevice && realViewportWidth > 800) || screen.width > 1200 ) {
-                    if(!useLargeImages) {
-                        useLargeImages = true;
-                        imageSrcWillChange = true;
-                    }
-                } else {
-                    if(useLargeImages) {
-                        useLargeImages = false;
-                        imageSrcWillChange = true;
-                    }
-                }
-                if(imageSrcWillChange && !firstResize) {
-                    gallery.invalidateCurrItems();
-                }
-                if(firstResize) {
-                    firstResize = false;
-                }
-                imageSrcWillChange = false;
-            });
-
-            gallery.listen('gettingData', function(index, item) {
-                if (!item.w || !item.h || item.w < 1 || item.h < 1) {
-                    var img = new Image()
-                    img.onload = function () {
-                        item.w = this.width
-                        item.h = this.height
-                        gallery.updateSize(true)
-                    }
-                    img.src = item.src
-                }
-            });
-
-            gallery.init();
-        }
-
-        // select all gallery elements
-        var imgElements = document.querySelectorAll( imgSelector );
-        for(var i = 0, l = imgElements.length; i < l; i++) {
-            imgElements[i].setAttribute('data-pswp-index', i+1);
-            imgElements[i].onclick = onThumbnailsClick;
-        }
-
-        // Parse URL and open gallery if it contains #&pid=3&gid=1
-        var hashData = photoswipeParseHash();
-        if(hashData.pid && hashData.gid) {
-            openPhotoSwipe( (hashData.pid * 1 - 1), true, true );
-        }
-    }
-}
-
-window.photoswipe = {
-    init: function (data, dom) {
+    initGalleryData: function (orData) {
         var newData = [];
-        for (var i = 0; i < data.length; i++) {
+        for (var i = 0; i < orData.length; i++) {
             var obj = {
-                src: data[i].src,
+                src: orData[i].src,
                 w: 0,
                 h: 0,
-                author: data[i].author || '',
-                msg: data[i].msg || ''
+                author: orData[i].author || '',
+                desc: orData[i].desc || ''
             };
             newData.push(obj);
         }
-        photoswipeObj.createGalleryDialog(newData, dom);
+        this.data = newData
+    },
+    showGallery: function (index, el) {
+        var self = this
+        var showItem = this.data[index]
+
+        if (!showItem.w || !showItem.h || showItem.w < 5 || showItem.h < 5) {
+            var img = new Image()
+            img.onload = function () {
+                showItem.w = this.width
+                showItem.h = this.height
+                self.__showGallery(index, el)
+            }
+            img.src = showItem.src
+        } else {
+            self.__showGallery(index, el)
+        }
+    },
+    __showGallery: function (index, el) {
+        var self = this
+        var pswpElement = document.querySelectorAll('.pswp')[0];
+        var options = {
+            getThumbBoundsFn: function(index, el) {
+                var thumbnail = document.querySelectorAll(self.selector)[index];
+                var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
+                var rect = thumbnail.getBoundingClientRect(); 
+                return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
+            },
+            addCaptionHTMLFn: function(item, captionEl, isFake) {
+                var author = item.author ? '<small>' + item.author + '</small>' : '';
+                var desc = item.desc ? '<br/><p class="img-desc">' + item.desc + '</p>' : '';
+                captionEl.children[0].innerHTML = author + desc;
+                return true;
+            },
+            tapToClose: true,
+            index: parseInt(index, 10),
+            history: true,
+            captionEl: true,
+            shareEl: false,
+            shareButtons: [
+              {id: 'download', label: '下载图片', url: '{{raw_image_url}}', download: true}
+            ]
+        };
+
+        this.gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, this.data, options);
+  
+        this.gallery.listen('gettingData', function (index, item) {
+            if (!item.w || !item.h || item.w < 1 || item.h < 1) {
+                const img = new Image();
+                img.onload = function () {
+                item.w = this.width;
+                item.h = this.height;
+                self.gallery.updateSize(true);
+                }
+                img.src = item.src;
+            }
+        });
+        
+        this.gallery.setCurrentEl(el)
+        this.gallery.init();
+        this.gallery.listen('close', function () {
+            if (self.closeHandler) {
+                self.closeHandler()
+            }
+        });
     }
 }
+
+var imgPreviewer = {
+    init: function (data, dom, closeFn) {
+        if (typeof(data) !== 'object' || typeof(dom) !== 'string') {
+            console.error('data 或 selector 不能为空！')
+            return
+        }
+        photoswipeObj.selector = dom;
+        photoswipeObj.closeHandler = closeFn
+        photoswipeObj.createGalleryDialog(data);
+    },
+    update: function (data) {
+        photoswipeObj.initGalleryData(data);
+    },
+    show: function (index) {
+        photoswipeObj.showGallery(index)
+    }
+}
+
+export default imgPreviewer

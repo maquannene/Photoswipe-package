@@ -278,9 +278,16 @@ a.pswp__share--download:hover {
   padding: 10px;
   line-height: 20px;
   color: #CCC; }
+.pswp__caption__center .img-desc {
+  overflow:hidden;
+  text-overflow:ellipsis;
+  display:-webkit-box;
+  -webkit-line-clamp:4;
+  -webkit-box-orient:vertical;
+}
 
-.pswp__caption--empty {
-  display: none; }
+/* .pswp__caption--empty {
+  display: none; } */
 
 /* Fake caption element, used to calculate height of next/prev image */
 .pswp__caption--fake {
