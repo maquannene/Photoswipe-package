@@ -18,7 +18,62 @@
 
 Clone or Download this resp, you can get the [photoswipe-package.js](http://jaywii.github.io/private/photo-package-demo/photoswipe-package.js) Or Vue Component `Previewer` in /build
 
+
 ### JS Usage
+
+```html
+<script type="text/javascript" src="/path/photoswipe-package.js"></script>
+
+<script>
+var arr = [image data obj]
+// close callback is optional.
+PhotoPackage.init(arr, '.image-selector');
+// display image gallery
+PhotoPackage.show(index)
+</script>
+```
+
+### Vue Usage
+
+copy /build/Previewer folder to your project, Previewer folder include 3 files : `index.js` , `myPhotoswipe.vue`, `photoswipeLite.js`
+
+```js
+// javascript
+import PhotoPackage from './Previewer'
+
+export default {
+  components: {
+    PhotoPackage,
+  }
+}
+```
+
+```html
+  <!-- template -->
+  <photo-package :list="imgs" :selector=".preview-img-vue" @on-close="closeHandler" :slotDesc="false" ref="previewer"></photo-package>
+```
+
+```js
+export default {
+  data() {
+    return {
+      imgs: [image data obj]
+    }
+  },
+  methods: {
+    showImg (index) {
+      this.$refs.previewer.show(index)
+    },
+    closeHandler () {
+      console.log('vue cloooooooose')
+    }
+  }
+}
+```
+
+## Example
+
+### JS Example
 
 ```html
 <div class="demo-gallery">
@@ -47,7 +102,7 @@ var arr = [
     }
 ]
 
-// close function is optional.
+// close callback is optional.
 PhotoPackage.init(arr, '.preview-img', function () {
     console.log('js cloooooooose');
 });
@@ -61,9 +116,7 @@ document.querySelector('.demo-gallery').addEventListener('click', function (e) {
 </script>
 ```
 
-### Vue Usage
-
-copy /build/Previewer folder to your project, Previewer folder include 3 files : `index.js` , `myPhotoswipe.vue`, `photoswipeLite.js`
+### Vue Example
 
 ```html
 <template>
