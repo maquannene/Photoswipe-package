@@ -1408,8 +1408,7 @@ var _gestureStartTime,
 		return p1.x === p2.x && p1.y === p2.y;
 	},
 	_isNearbyPoints = function(touch0, touch1) {
-		alert(Math.abs(touch0.x - touch1.x))
-		// return Math.abs(touch0.x - touch1.x) < DOUBLE_TAP_RADIUS && Math.abs(touch0.y - touch1.y) < DOUBLE_TAP_RADIUS;
+		return Math.abs(touch0.x - touch1.x) < DOUBLE_TAP_RADIUS && Math.abs(touch0.y - touch1.y) < DOUBLE_TAP_RADIUS;
 	},
 	_calculatePointsDistance = function(p1, p2) {
 		_tempPoint.x = Math.abs( p1.x - p2.x );
