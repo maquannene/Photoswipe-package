@@ -16,7 +16,7 @@
 
 ## Usage
 
-Clone or Download this resp, you can get the [photoswipe-package.js](http://jaywii.github.io/private/photo-package-demo/photoswipe-package.js) Or Vue Component `Previewer`
+Clone or Download this resp, you can get the [photoswipe-package.js](http://jaywii.github.io/private/photo-package-demo/photoswipe-package.js) Or Vue Component `Previewer` in /build
 
 ### JS Usage
 
@@ -63,7 +63,7 @@ document.querySelector('.demo-gallery').addEventListener('click', function (e) {
 
 ### Vue Usage
 
-copy /dist/Previewer folder to your project, Previewer folder include 3 files : `index.js` , `myPhotoswipe.vue`, `photoswipeLite.js`
+copy /build/Previewer folder to your project, Previewer folder include 3 files : `index.js` , `myPhotoswipe.vue`, `photoswipeLite.js`
 
 ```html
 <template>

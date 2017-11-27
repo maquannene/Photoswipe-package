@@ -6,7 +6,7 @@ module.exports = {
     entry: __dirname+'/entry.js',
     // entry: __dirname+'/photo-package-entry.js',
     output: {
-        path: __dirname+'/build',
+        path: __dirname+'/dist',
         filename: 'build.js'
         // filename: 'photoswipe-package.js'
     },
