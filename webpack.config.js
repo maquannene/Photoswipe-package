@@ -1,20 +1,22 @@
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var OpenPackPlugin = require('openpack');
 
 module.exports = {
-    // entry: __dirname+'/myPhotoSwipeEntry.js',
     entry: __dirname+'/entry.js',
+    // entry: __dirname+'/photo-package-entry.js',
     output: {
-        path: __dirname+'/dist',
-        // filename: 'myPhotoswipe.js'
-        filename: 'bundle.js'
+        path: __dirname+'/build',
+        filename: 'build.js'
+        // filename: 'photoswipe-package.js'
     },
     module: {
         loaders: [
             {test: /\.css$/,loader: 'style-loader!css-loader'},
             {test: /\.(png|jpg|gif)$/, loader: 'url-loader?limit=8192'},
             {test: /\.svg/, loader: 'svg-url-loader'},
-            {test: /\.vue/, loader: 'vue-loader'}
+            {test: /\.vue/, loader: 'vue-loader'},
+            {test: /\.js$/,use: ['babel-loader'],exclude: /node_modules/}
         ]
     },
     plugins: [
@@ -25,11 +27,13 @@ module.exports = {
       }),
       new HtmlWebpackPlugin({
         template: 'index.html'
+      }),
+      new OpenPackPlugin({
+        lan: true
       })
     ],
     devServer: {
       host: '0.0.0.0',
-      disableHostCheck: true, // 为了使用本机ip访问页面，关闭host检查
       port: 88
     }
 };

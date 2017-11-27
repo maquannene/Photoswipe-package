@@ -6,18 +6,26 @@
       </li>
     </ul>
     
-    <preview-lite :list="imgs" :selector="selector" @on-close="closeHandler" ref="previewer"></preview-lite>
+    <photo-package :list="imgs" :selector="selector" @on-close="closeHandler" :slotDesc="true" ref="previewer">
+      <div
+        slot="img-desc"
+        slot-scope="props"
+        class="img-desc white">
+        <p class="author">{{ props.item.author ? props.item.author : '' }}</p>
+        <p>{{ props.item.desc ? props.item.desc : '' }}</p>
+      </div>
+    </photo-package>
 
   </div>
 </template>
 
 <script>
-import PreviewLite from './Previewer'
+import PhotoPackage from './Previewer'
 
 export default {
   name: "vue-previewer",
   components: {
-    PreviewLite,
+    PhotoPackage,
   },
   data() {
     return {
@@ -30,7 +38,7 @@ export default {
           desc: 'This is dummy caption.'
         },
         {
-          src: 'https://farm6.staticflickr.com/5591/15008867125_68a8ed88cc_m.jpg',
+          src: 'https://farm6.staticflickr.com/5584/14985868676_4b802b932a_b.jpg'
         },
         {
           src: 'https://farm4.staticflickr.com/3920/15008465772_383e697089_b.jpg',
@@ -43,6 +51,7 @@ export default {
   },
   methods: {
     showImg (index) {
+      // console.log(this.$refs.previewer.photoswipe)
       this.$refs.previewer.show(index)
     },
     closeHandler () {
@@ -62,5 +71,14 @@ ul {
 ul .preview-img-vue {
   margin-right: 15px;
   float: left;
+}
+.img-desc p{
+  margin: 0;
+  line-height: 1.5;
+}
+.img-desc .author {
+  margin: 10px 0;
+  font-size: 12px;
+  color: #fff;
 }
 </style>

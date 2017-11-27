@@ -10,10 +10,10 @@ var photoswipeObj = {
     // 创建弹出框图片
     createGalleryDialog: function (data) {
         // 如果存在则不在渲染，仅仅初始化数据
-        if (!document.querySelector('#gallery')) {
+        if (!document.querySelector('#gallery-pswp')) {
             var body = document.body;
             var galleryDom = document.createElement("DIV");
-            galleryDom.id = 'gallery';
+            galleryDom.id = 'gallery-pswp';
             galleryDom.className = 'pswp';
     
             // append body  dialog
@@ -89,7 +89,7 @@ var photoswipeObj = {
     },
     __showGallery: function (index, el) {
         var self = this
-        var pswpElement = document.querySelectorAll('.pswp')[0];
+        var pswpElement = document.querySelectorAll('#gallery-pswp')[0];
         var options = {
             getThumbBoundsFn: function(index, el) {
                 var thumbnail = document.querySelectorAll(self.selector)[index];

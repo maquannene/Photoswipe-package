@@ -1,3 +1,3 @@
-import PreviewLite from './myPhotoswipe.vue'
+import PhotoPackage from './myPhotoswipe.vue'
 
-export default PreviewLite
+export default PhotoPackage
