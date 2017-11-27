@@ -25,12 +25,12 @@ module.exports = {
           warnings: false
         }
       }),
-      // new HtmlWebpackPlugin({
-      //   template: 'index.html'
-      // }),
-      // new OpenPackPlugin({
-      //   lan: true
-      // })
+      new HtmlWebpackPlugin({
+        template: 'index.html'
+      }),
+      new OpenPackPlugin({
+        lan: true
+      })
     ],
     devServer: {
       host: '0.0.0.0',
