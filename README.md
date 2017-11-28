@@ -13,7 +13,7 @@
 2. Simpler interface, more convenient use.
 3. Vue2.0 component support.
 4. Vue2.0 image detail Slot support.
-5. (2017.11.28) Support Photoswipe all original UI options and add a new option `topBarEl` (you can use this option to show/hide top-bar)
+5. (2017.11.28) Support Photoswipe all original options and add a new option `topBarEl` (you can use this option to show/hide top-bar)
 
 ## Usage
 
