@@ -1,11 +1,13 @@
 import PhotoSwipe from './photoswipe.js'
 import PhotoSwipeUI_Default from './photoswipe-ui-default.js'
+import objectAssign from 'object-assign'
 
 /*深一层封装photoswipe 暴露接口*/
 var photoswipeObj = {
     data: [],
     selector: '',
     gallery: {},
+    options: {},
     closeHandler: null,
     // 创建弹出框图片
     createGalleryDialog: function (data) {
@@ -90,7 +92,7 @@ var photoswipeObj = {
     __showGallery: function (index, el) {
         var self = this
         var pswpElement = document.querySelectorAll('#gallery-pswp')[0];
-        var options = {
+        var options = objectAssign({
             getThumbBoundsFn: function(index, el) {
                 var thumbnail = document.querySelectorAll(self.selector)[index];
                 var pageYScroll = window.pageYOffset || document.documentElement.scrollTop;
@@ -107,11 +109,15 @@ var photoswipeObj = {
             index: parseInt(index, 10),
             history: true,
             captionEl: true,
-            shareEl: false,
-            shareButtons: [
-              {id: 'download', label: '下载图片', url: '{{raw_image_url}}', download: true}
-            ]
-        };
+            shareEl: false
+        }, this.options);
+
+        var topBarEl = document.querySelector("#gallery-pswp .pswp__top-bar")
+        if (this.options.topBarEl === false) {
+            topBarEl.style.display = 'none'
+        } else {
+            topBarEl.style.display = 'block'
+        }
 
         this.gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, this.data, options);
   
@@ -138,13 +144,14 @@ var photoswipeObj = {
 }
 
 var imgPreviewer = {
-    init: function (data, dom, closeFn) {
+    init: function (data, dom, options, closeFn) {
         if (typeof(data) !== 'object' || typeof(dom) !== 'string') {
             console.error('data 或 selector 不能为空！')
             return
         }
         photoswipeObj.selector = dom;
-        photoswipeObj.closeHandler = closeFn
+        photoswipeObj.options = options;
+        photoswipeObj.closeHandler = closeFn;
         photoswipeObj.createGalleryDialog(data);
     },
     update: function (data) {

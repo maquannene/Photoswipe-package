@@ -9,7 +9,7 @@
           <div class="pswp__item"></div>
         </div>
         <div class="pswp__ui pswp__ui--hidden">
-          <div class="pswp__top-bar">
+          <div class="pswp__top-bar" v-show="showTopBar">
             <div class="pswp__counter"></div>
             <button class="pswp__button pswp__button--close" title="Close (Esc)"></button>
             <button class="pswp__button pswp__button--share" title="Share"></button>
@@ -28,10 +28,10 @@
           </div>
           <button class="pswp__button pswp__button--arrow--left" title="Previous (arrow left)"></button>
           <button class="pswp__button pswp__button--arrow--right" title="Next (arrow right)"></button>
-          <div class="pswp__caption">
+          <div class="pswp__caption" v-show="!slotDesc">
             <div class="pswp__caption__center"></div>
           </div>
-          <div class="caption" v-if="slotDesc">
+          <div class="caption" v-if="slotDesc && showSlot">
             <slot name="img-desc" :item="list[curIndex]"></slot>
           </div>
         </div>
@@ -43,6 +43,7 @@
 const photoswipeObj = require('./photoswipeLite.js')
 const PhotoSwipe = photoswipeObj.PhotoSwipe
 const UI = photoswipeObj.PhotoSwipeUI_Default
+import objectAssign from 'object-assign'
 
 export default {
   name: 'previewer',
@@ -61,6 +62,12 @@ export default {
         }
         return one
       })
+    },
+    showSlot () {
+      return ((this.options.captionEl === undefined) || (this.options.captionEl === true))
+    },
+    showTopBar () {
+      return ((this.options.topBarEl === undefined) || (this.options.topBarEl === true))
     }
   },
   methods: {
@@ -81,7 +88,7 @@ export default {
     },
     __init (index) {
       const self = this
-      let options = {
+      let options = objectAssign({
         getThumbBoundsFn: (index, el) => {
           let thumbnail = document.querySelectorAll(self.selector)[index]
           let pageYScroll = window.pageYOffset || document.documentElement.scrollTop
@@ -91,11 +98,8 @@ export default {
         tapToClose: true,
         index: parseInt(index, 10),
         shareEl: false,
-        history: true,
-        shareButtons: [
-          {id: 'download', label: '下载图片', url: '{{raw_image_url}}', download: true}
-        ]
-      };
+        history: true
+      }, this.options)
 
       if (!this.slotDesc) {
         options.addCaptionHTMLFn = function(item, captionEl, isFake) {
@@ -146,6 +150,12 @@ export default {
       type: Number,
       default: 0
     },
+    options: {
+      type: Object,
+      default () {
+        return {}
+      }
+    },
     selector: {
       type: String,
       default: ''
@@ -169,5 +179,13 @@ export default {
   color: #ccc;
   padding: 10px;
   box-sizing: border-box;
+  background-color: rgba(0,0,0,.5);
+  -webkit-backface-visibility: hidden;
+  will-change: opacity;
+  -webkit-transition: opacity 333ms cubic-bezier(.4,0,.22,1);
+  transition: opacity 333ms cubic-bezier(.4,0,.22,1);
+}
+.pswp__ui--hidden .caption {
+  opacity: .001;
 }
 </style>

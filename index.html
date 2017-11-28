@@ -60,7 +60,6 @@ img.preview-img {
     </div>
 </div>
 
-<script type="text/javascript" src="/build/photoswipe-package.js"></script>
 <script>
 window.onload = function () {
     var arr = [
@@ -81,7 +80,12 @@ window.onload = function () {
         }
     ]
 
-    PhotoPackage.init(arr, '.preview-img', function () {
+    var options = {
+        closeEl: true,
+        tapToClose: false,
+        topBarEl: true
+    }
+    PhotoPackage.init(arr, '.preview-img', options, function () {
         console.log('js cloooooooose');
     });
 

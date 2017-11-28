@@ -6,7 +6,7 @@
       </li>
     </ul>
     
-    <photo-package :list="imgs" :selector="selector" @on-close="closeHandler" :slotDesc="true" ref="previewer">
+    <photo-package :list="imgs" :selector="selector" :options="options" @on-close="closeHandler" :slotDesc="true" ref="previewer">
       <div
         slot="img-desc"
         slot-scope="props"
@@ -46,7 +46,11 @@ export default {
           desc: 'It\'s a dummy caption. He who searches for meaning here will be sorely disappointed.'
         }
       ],
-      selector: '.preview-img-vue'
+      selector: '.preview-img-vue',
+      options: {
+        topBarEl: true,
+        closeEl: true
+      }
     }
   },
   methods: {
