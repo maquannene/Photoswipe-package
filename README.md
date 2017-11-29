@@ -54,7 +54,7 @@ export default {
   <!-- template -->
   <photo-package 
     :list="imgs" 
-    :selector=".preview-img-vue" 
+    selector=".preview-img-vue" 
     :options="options" 
     @on-close="closeHandler" 
     ref="previewer">
@@ -142,7 +142,7 @@ document.querySelector('.demo-gallery').addEventListener('click', function (e) {
     </li>
   </ul>
   
-  <photo-package :list="imgs" :selector=".preview-img-vue" :options="options" @on-close="closeHandler" :slotDesc="false" ref="previewer"></photo-package>
+  <photo-package :list="imgs" selector=".preview-img-vue" :options="options" @on-close="closeHandler" :slotDesc="false" ref="previewer"></photo-package>
 
   <!-- if you want a more personal image footer(image describe, like author, detail...), you can set slotDesc to true -->
   <!-- tips: props.item === imgs[index] , slot must be 'img-desc' -->

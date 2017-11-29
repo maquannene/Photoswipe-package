@@ -140,6 +140,9 @@ var photoswipeObj = {
                 self.closeHandler()
             }
         });
+    },
+    getGallery: function () {
+        return this.gallery
     }
 }
 
@@ -159,6 +162,9 @@ var imgPreviewer = {
     },
     show: function (index) {
         photoswipeObj.showGallery(index)
+    },
+    getPhotoswipe: function () {
+        return photoswipeObj.getGallery()
     }
 }
 

@@ -4,15 +4,15 @@ var OpenPackPlugin = require('openpack');
 
 module.exports = {
     entry: {
-      // vue: ['vue'],
-      // path: __dirname+'/entry.js',
-      path: __dirname+'/photo-package-entry.js',
+      vue: ['vue'],
+      path: __dirname+'/entry.js',
+      // path: __dirname+'/photo-package-entry.js',
     },
     output: {
         path: __dirname+'/dist',
-        // filename: '[name].js',
-        // chunkFilename: '[name].js',
-        filename: 'photoswipe-package.js'
+        filename: '[name].js',
+        chunkFilename: '[name].js',
+        // filename: 'photoswipe-package.js'
     },
     module: {
         loaders: [
@@ -29,15 +29,15 @@ module.exports = {
           warnings: false
         }
       }),
-      // new webpack.optimize.CommonsChunkPlugin({
-      //   names: ['vue']
-      // }),
-      // new HtmlWebpackPlugin({
-      //   template: 'index.html'
-      // }),
-      // new OpenPackPlugin({
-      //   lan: true
-      // })
+      new webpack.optimize.CommonsChunkPlugin({
+        names: ['vue']
+      }),
+      new HtmlWebpackPlugin({
+        template: 'index.html'
+      }),
+      new OpenPackPlugin({
+        lan: true
+      })
     ],
     devServer: {
       host: '0.0.0.0',

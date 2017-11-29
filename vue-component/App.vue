@@ -49,7 +49,8 @@ export default {
       selector: '.preview-img-vue',
       options: {
         topBarEl: true,
-        closeEl: true
+        closeEl: true,
+        loop: false
       }
     }
   },
