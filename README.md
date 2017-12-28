@@ -37,11 +37,13 @@ PhotoPackage.show(index)
 
 ### Vue Usage
 
-copy /build/Previewer folder to your project, Previewer folder include 3 files : `index.js` , `myPhotoswipe.vue`, `photoswipeLite.js`
+```js
+npm i photoswipe-package --save
+```
 
 ```js
 // javascript
-import PhotoPackage from './Previewer'
+import PhotoPackage from 'photoswipe-package'
 
 export default {
   components: {
@@ -159,7 +161,7 @@ document.querySelector('.demo-gallery').addEventListener('click', function (e) {
 </template>
 
 <script>
-import PhotoPackage from './Previewer'
+import PhotoPackage from 'photoswipe-package'
 
 export default {
   name: "vue-previewer",
