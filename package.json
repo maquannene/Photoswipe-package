@@ -30,6 +30,7 @@
   "dependencies": {
     "fastclick": "^1.0.6",
     "object-assign": "^4.1.1",
+    "photoswipe-package": "^1.0.1",
     "vue": "^2.5.8",
     "vue-loader": "^13.5.0",
     "vue-template-compiler": "^2.5.8"

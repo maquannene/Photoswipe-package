@@ -20,7 +20,7 @@
 </template>
 
 <script>
-import PhotoPackage from './Previewer'
+import PhotoPackage from 'photoswipe-package'
 
 export default {
   name: "vue-previewer",
